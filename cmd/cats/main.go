@@ -1,7 +1,13 @@
 package main
 
-import "fmt"
+import (
+	"flag"
+
+	"github.com/nesheep/cats"
+)
 
 func main() {
-	fmt.Println("cats")
+	flag.Parse()
+	args := flag.Args()
+	cats.Run(args)
 }
