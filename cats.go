@@ -6,6 +6,8 @@ import (
 	"os"
 )
 
+var cats = []int{0x1f408, 0x1f638, 0x1f639, 0x1f63a, 0x1f63b, 0x1f63c, 0x1f63d, 0x1f63e, 0x1f63f, 0x1f640}
+
 func Run(fileNames []string) {
 	for _, fn := range fileNames {
 		err := printFile(fn)
@@ -22,9 +24,12 @@ func printFile(filename string) error {
 	}
 	defer f.Close()
 
-	scanner := bufio.NewScanner(f)
-	for scanner.Scan() {
-		fmt.Println(scanner.Text())
+	s := bufio.NewScanner(f)
+	i := 0
+	for s.Scan() {
+		cat := cats[(i)%len(cats)]
+		fmt.Printf("%c  %s\n", cat, s.Text())
+		i++
 	}
 
 	return nil
