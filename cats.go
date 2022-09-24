@@ -8,16 +8,16 @@ import (
 
 var cats = []int{0x1f408, 0x1f638, 0x1f639, 0x1f63a, 0x1f63b, 0x1f63c, 0x1f63d, 0x1f63e, 0x1f63f, 0x1f640}
 
-func Run(fileNames []string) {
+func Run(fileNames []string, withNumber bool) {
 	for _, fn := range fileNames {
-		err := printFile(fn)
+		err := printFile(fn, withNumber)
 		if err != nil {
 			continue
 		}
 	}
 }
 
-func printFile(filename string) error {
+func printFile(filename string, withNumber bool) error {
 	f, err := os.Open(filename)
 	if err != nil {
 		return err
@@ -28,7 +28,11 @@ func printFile(filename string) error {
 	i := 0
 	for s.Scan() {
 		cat := cats[(i)%len(cats)]
-		fmt.Printf("%c  %s\n", cat, s.Text())
+		line := fmt.Sprintf("%c  %s\n", cat, s.Text())
+		if withNumber {
+			line = fmt.Sprintf("%6d  %s", i+1, line)
+		}
+		fmt.Print(line)
 		i++
 	}
 
