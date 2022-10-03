@@ -1,14 +1,27 @@
-package cats
+package main
 
 import (
 	"bufio"
+	"flag"
 	"fmt"
 	"os"
 )
 
 var cats = []int{0x1f408, 0x1f638, 0x1f639, 0x1f63a, 0x1f63b, 0x1f63c, 0x1f63d, 0x1f63e, 0x1f63f, 0x1f640}
 
-func Run(fileNames []string, withNumber bool) {
+var nFlag bool
+
+func init() {
+	flag.BoolVar(&nFlag, "n", false, "Number the output lines, starting at 1.")
+}
+
+func main() {
+	flag.Parse()
+	args := flag.Args()
+	run(args, nFlag)
+}
+
+func run(fileNames []string, withNumber bool) {
 	for _, fn := range fileNames {
 		err := printFile(fn, withNumber)
 		if err != nil {
