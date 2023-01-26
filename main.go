@@ -20,15 +20,15 @@ type options struct {
 }
 
 var rootCmd = &cobra.Command{
-	Use:   "cat [filenames]",
-	Short: "Print files to the screen",
+	Use:   "cats [filenames]",
+	Short: "Print files to the screen with cats",
 	Args:  cobra.MinimumNArgs(1),
 	Run:   run,
 }
 
 func init() {
-	rootCmd.PersistentFlags().BoolVarP(&eFlag, "end", "e", false, "Display a dollar sign ('$') at the end of each line.")
-	rootCmd.PersistentFlags().BoolVarP(&nFlag, "number", "n", false, "Number the output lines, starting at 1.")
+	rootCmd.PersistentFlags().BoolVarP(&eFlag, "end", "e", false, "Display a dollar sign ('$') at the end of each line")
+	rootCmd.PersistentFlags().BoolVarP(&nFlag, "number", "n", false, "Number the output lines, starting at 1")
 }
 
 func main() {
