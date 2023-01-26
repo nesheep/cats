@@ -2,10 +2,11 @@ package main
 
 import (
 	"bufio"
-	"flag"
 	"fmt"
 	"os"
 	"strings"
+
+	"github.com/spf13/cobra"
 )
 
 var cats = []int{0x1f408, 0x1f638, 0x1f639, 0x1f63a, 0x1f63b, 0x1f63c, 0x1f63d, 0x1f63e, 0x1f63f, 0x1f640}
@@ -18,23 +19,28 @@ type options struct {
 	n bool
 }
 
+var rootCmd = &cobra.Command{
+	Use:   "cat [filenames]",
+	Short: "Print files to the screen",
+	Args:  cobra.MinimumNArgs(1),
+	Run:   run,
+}
+
 func init() {
-	flag.BoolVar(&eFlag, "e", false, "Display a dollar sign ('$') at the end of each line.")
-	flag.BoolVar(&nFlag, "n", false, "Number the output lines, starting at 1.")
+	rootCmd.PersistentFlags().BoolVarP(&eFlag, "end", "e", false, "Display a dollar sign ('$') at the end of each line.")
+	rootCmd.PersistentFlags().BoolVarP(&nFlag, "number", "n", false, "Number the output lines, starting at 1.")
 }
 
 func main() {
-	flag.Parse()
-	args := flag.Args()
+	rootCmd.Execute()
+}
+
+func run(cmd *cobra.Command, args []string) {
 	opt := options{
 		e: eFlag,
 		n: nFlag,
 	}
-	run(args, opt)
-}
-
-func run(fileNames []string, opt options) {
-	for _, fn := range fileNames {
+	for _, fn := range args {
 		err := printFile(fn, opt)
 		if err != nil {
 			continue
